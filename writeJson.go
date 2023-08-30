@@ -54,6 +54,7 @@ func writeName(n named, f io.Writer, ctxt *context, indent int) {
 func writeElement(el element, f io.Writer, ctxt *context, indent int) {
 	if el.maxOccurs > 1 {
 		inPrintf(f, indent, "\"%s\": {\n", el.getName())
+		inPrintf(f, indent+tsz, "\"maxItems\": %d,\n", el.maxOccurs)
 		inPrintf(f, indent+tsz, "\"type\": \"array\",\n")
 		inPrintf(f, indent+tsz, "\"items\": {\n")
 		inPrintf(f, indent+tsz+tsz, "\"$ref\": \"#/definitions/%s\",\n", el.etype)
@@ -244,7 +245,7 @@ func writeComplexBody(cmplx complexType, f io.Writer, ctxt *context, indent int)
 
 func writeAttrs(attd attributed, f io.Writer, ctxt *context, indent int) []string {
 	attrs := attd.getAttrs()
-	required := []string{"#name"}
+	required := []string{"#value"}
 	for _, attr := range attrs {
 		if attr.required {
 			required = append(required, "@"+attr.name)
