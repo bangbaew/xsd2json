@@ -89,6 +89,10 @@ func writeSimpleBody(simple simpleType, f io.Writer, ctxt *context, indent int) 
 func writeSimpleProperties(simple simpleType, f io.Writer, ctxt *context, indent int) {
 	jtype, mapped := mapTypename(simple.base)
 	inPrintf(f, indent, "\"type\": \"%s\",\n", jtype)
+
+	if strings.Contains(simple.base, "date") {
+		inPrintf(f, indent, "\"format\": \"date-time\",\n")
+	}
 	if mapped {
 		inPrintf(f, indent, "\"$comment\": \"XML datatype was %s\",\n", simple.base)
 	}
